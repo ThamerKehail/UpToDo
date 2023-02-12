@@ -7,35 +7,38 @@ class BodyEmptyNotes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Spacer(
-          flex: 1,
-        ),
-        SvgPicture.asset("assets/icons/empty_task.svg"),
-        const Text(
-          "What do you want to do today?",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w400,
-            color: Colors.white,
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Spacer(
+            flex: 1,
           ),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        const Text(
-          "Tap + to add your tasks",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            color: Colors.white,
+          SvgPicture.asset("assets/icons/empty_task.svg"),
+          const Text(
+            "What do you want to do today?",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+              color: Colors.white,
+            ),
           ),
-        ),
-        const Spacer(
-          flex: 2,
-        ),
-      ],
+          const SizedBox(
+            height: 12,
+          ),
+          const Text(
+            "Tap + to add your tasks",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: Colors.white,
+            ),
+          ),
+          const Spacer(
+            flex: 2,
+          ),
+        ],
+      ),
     );
   }
 }
