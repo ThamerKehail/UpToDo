@@ -42,7 +42,7 @@ class AllNotes extends StatelessWidget {
                   );
                 }),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
         ],

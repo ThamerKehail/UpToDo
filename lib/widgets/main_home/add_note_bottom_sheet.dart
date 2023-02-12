@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:uptodo/cubit/add_note_cubit/add_note_cubit.dart';
 import 'package:uptodo/helper/color.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:uptodo/model/note_model.dart';
-import 'package:uptodo/widgets/main_home/custom_table_calender.dart';
+import 'package:uptodo/widgets/main_home/show_category_pop_up.dart';
 
 import '../../cubit/notes_cubit/notes_cubit.dart';
 
@@ -108,7 +105,7 @@ class AddNoteBottomSheet extends StatelessWidget {
                                 firstDate: DateTime.utc(2010, 10, 16),
                                 lastDate: DateTime.utc(2030),
                               );
-                              print(DateFormat.yMd()
+                              debugPrint(DateFormat.yMd()
                                   .format(date ?? DateTime.now())
                                   .toString());
                             },
@@ -116,9 +113,21 @@ class AddNoteBottomSheet extends StatelessWidget {
                           const SizedBox(
                             width: 10,
                           ),
-                          const Icon(
-                            Icons.discount_outlined,
-                            color: Colors.white,
+                          IconButton(
+                            icon: const Icon(
+                              Icons.discount_outlined,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return const AlertDialog(
+                                      contentPadding: EdgeInsets.zero,
+                                      content: ShowCategoryPopUp(),
+                                    );
+                                  });
+                            },
                           ),
                           const SizedBox(
                             width: 10,

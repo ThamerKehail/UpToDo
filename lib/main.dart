@@ -6,6 +6,7 @@ import 'package:uptodo/cubit/app_cubit/app_cubit.dart';
 import 'package:uptodo/cubit/notes_cubit/notes_cubit.dart';
 import 'package:uptodo/helper/const.dart';
 import 'package:uptodo/helper/simple_bloc_observer.dart';
+import 'package:uptodo/model/category_model.dart';
 import 'package:uptodo/model/note_model.dart';
 import 'package:uptodo/view/main_home_screen.dart';
 
@@ -13,7 +14,9 @@ void main() async {
   await Hive.initFlutter();
   Bloc.observer = SimpleBlocObserver();
   Hive.registerAdapter(NoteModelAdapter());
+  Hive.registerAdapter(CategoryModelAdapter());
   await Hive.openBox<NoteModel>(kNotesBox);
+  await Hive.openBox<NoteModel>(kCategoryBox);
 
   runApp(const MyApp());
 }
