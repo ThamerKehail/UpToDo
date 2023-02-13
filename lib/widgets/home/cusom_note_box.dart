@@ -47,6 +47,13 @@ class CustomNoteBox extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
+                  Text(
+                    noteModel.date,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -71,6 +78,14 @@ class CustomNoteBox extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(4),
                               color: const Color(0xff809CFF),
+                            ),
+                            child: Center(
+                              child: Text(
+                                noteModel.category,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
                           const SizedBox(

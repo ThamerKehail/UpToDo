@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uptodo/cubit/add_note_cubit/add_note_cubit.dart';
 import 'package:uptodo/cubit/category_cubit/category_cubit.dart';
-import 'package:uptodo/cubit/create_category_cubit/create_category_cubit.dart';
 import 'package:uptodo/model/category_model.dart';
 import 'package:uptodo/widgets/custom_button.dart';
+import 'package:uptodo/widgets/main_home/categoty_card.dart';
 
 import '../../helper/color.dart';
 import '../../view/create_category_screen.dart';
 
-class ShowCategoryPopUp extends StatelessWidget {
+class ShowCategoryPopUp extends StatefulWidget {
   const ShowCategoryPopUp({Key? key}) : super(key: key);
+
+  @override
+  State<ShowCategoryPopUp> createState() => _ShowCategoryPopUpState();
+}
+
+class _ShowCategoryPopUpState extends State<ShowCategoryPopUp> {
+  @override
+  void initState() {
+    BlocProvider.of<AddNoteCubit>(context).getCategory();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +33,7 @@ class ShowCategoryPopUp extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            const Text(
               "Choose Category",
               style: TextStyle(
                 color: Colors.white,
@@ -31,10 +43,9 @@ class ShowCategoryPopUp extends StatelessWidget {
             const Divider(
               color: Colors.white,
             ),
-            BlocBuilder<CategoryCubit, CategoryState>(
-                builder: (context, state) {
+            BlocBuilder<AddNoteCubit, AddNoteState>(builder: (context, state) {
               List<CategoryModel> categories =
-                  BlocProvider.of<CategoryCubit>(context).categories ?? [];
+                  BlocProvider.of<AddNoteCubit>(context).categories;
               print(categories.length);
               return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.5,
@@ -43,33 +54,19 @@ class ShowCategoryPopUp extends StatelessWidget {
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
                             childAspectRatio: 1,
-                            crossAxisSpacing: 25,
+                            crossAxisSpacing: 20,
                             mainAxisSpacing: 10),
                     itemCount: categories.length,
                     itemBuilder: (context, index) {
-                      return InkWell(
+                      return CategoryCard(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) =>
-                                      const CreateCategoryScreen()));
+                          BlocProvider.of<AddNoteCubit>(context)
+                              .changeCatTitle(categories[index].title ?? "");
+                          BlocProvider.of<AddNoteCubit>(context).getCatTitle();
+                          Navigator.pop(context);
+                          print(categories[index].title);
                         },
-                        child: Container(
-                          width: 64,
-                          height: 64,
-                          decoration: BoxDecoration(
-                            color: greenOneColor,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.add,
-                              size: 30,
-                              color: greenTwoColor,
-                            ),
-                          ),
-                        ),
+                        cat: categories[index],
                       );
                     }),
               );
@@ -77,7 +74,14 @@ class ShowCategoryPopUp extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            CustomButton(text: "ggg", onTap: () {}),
+            CustomButton(
+                text: "Add Category",
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const CreateCategoryScreen()));
+                }),
           ],
         ),
       ),

@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return Scaffold(
           body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 25),
-        child: BlocProvider.of<NotesCubit>(context).notes!.isNotEmpty
+        child: BlocProvider.of<NotesCubit>(context).notes.isNotEmpty
             ? AllNotes()
             : BodyEmptyNotes(),
       ));

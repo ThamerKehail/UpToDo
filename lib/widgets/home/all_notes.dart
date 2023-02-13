@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uptodo/cubit/notes_cubit/notes_cubit.dart';
-import 'package:uptodo/helper/color.dart';
 import 'package:uptodo/model/note_model.dart';
 import 'package:uptodo/widgets/home/cusom_note_box.dart';
 import 'package:uptodo/widgets/home/custom_appbar.dart';
@@ -13,7 +12,7 @@ class AllNotes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NotesCubit, NotesState>(builder: (context, state) {
-      List<NoteModel> notes = BlocProvider.of<NotesCubit>(context).notes!;
+      List<NoteModel> notes = BlocProvider.of<NotesCubit>(context).notes;
       return Column(
         children: [
           const CustomAppbar(

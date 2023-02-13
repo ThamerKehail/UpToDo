@@ -16,8 +16,8 @@ void main() async {
   Bloc.observer = SimpleBlocObserver();
   Hive.registerAdapter(NoteModelAdapter());
   Hive.registerAdapter(CategoryModelAdapter());
-  await Hive.openBox<NoteModel>(kNotesBox);
   await Hive.openBox<CategoryModel>(kCategoryBox);
+  await Hive.openBox<NoteModel>(kNotesBox);
 
   runApp(const MyApp());
 }
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => NotesCubit()),
-        BlocProvider(create: (context) => CategoryCubit()),
+        BlocProvider(create: (context) => AddNoteCubit()),
         BlocProvider(create: (context) => AppCubit()),
       ],
       child: MaterialApp(

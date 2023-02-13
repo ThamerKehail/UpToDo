@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uptodo/cubit/add_note_cubit/add_note_cubit.dart';
+import 'package:uptodo/cubit/category_cubit/category_cubit.dart';
 import 'package:uptodo/cubit/create_category_cubit/create_category_cubit.dart';
 import 'package:uptodo/helper/color.dart';
 import 'package:uptodo/model/category_model.dart';
@@ -46,8 +48,10 @@ class CreateCategoryScreen extends StatelessWidget {
                     style: const TextStyle(
                       color: Colors.white,
                     ),
+                    controller:
+                        BlocProvider.of<CreateCategoryCubit>(context).catName,
                     decoration: const InputDecoration(
-                        hintText: "Task Title",
+                        hintText: "Category Name",
                         fillColor: grayColor,
                         filled: true,
                         hintStyle: TextStyle(
@@ -61,6 +65,24 @@ class CreateCategoryScreen extends StatelessWidget {
                         border: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white))),
                   ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  const Text(
+                    "Category Icon:",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        BlocProvider.of<CreateCategoryCubit>(context)
+                            .pickIcon(context);
+                      },
+                      child: Text("Choose Icons")),
+                  BlocProvider.of<CreateCategoryCubit>(context).icons ??
+                      SizedBox(),
                   const SizedBox(
                     height: 15,
                   ),
@@ -129,11 +151,17 @@ class CreateCategoryScreen extends StatelessWidget {
                         ),
                       ),
                       CustomButton(
-                        onTap: () {
-                          CategoryModel notes = CategoryModel(
-                              color: 4294901760, title: "University");
-                          BlocProvider.of<CreateCategoryCubit>(context)
-                              .addCategory(notes);
+                        onTap: () async {
+                          var blocProvide =
+                              BlocProvider.of<CreateCategoryCubit>(context);
+                          CategoryModel cat = CategoryModel(
+                            color: blocProvide.getCurrentColor(),
+                            title: blocProvide.catName.text,
+                          );
+                          await BlocProvider.of<CreateCategoryCubit>(context)
+                              .addCategory(cat);
+                          BlocProvider.of<AddNoteCubit>(context).getCategory();
+                          Navigator.pop(context);
                         },
                         text: "Create Category",
                       ),

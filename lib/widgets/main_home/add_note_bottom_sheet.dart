@@ -5,6 +5,7 @@ import 'package:uptodo/cubit/add_note_cubit/add_note_cubit.dart';
 import 'package:uptodo/helper/color.dart';
 import 'package:uptodo/model/note_model.dart';
 import 'package:uptodo/widgets/main_home/show_category_pop_up.dart';
+import 'package:uptodo/widgets/main_home/task_priority_pop_up.dart';
 
 import '../../cubit/notes_cubit/notes_cubit.dart';
 
@@ -55,6 +56,8 @@ class AddNoteBottomSheet extends StatelessWidget {
                         height: 10,
                       ),
                       TextFormField(
+                        controller:
+                            BlocProvider.of<AddNoteCubit>(context).title,
                         style: const TextStyle(
                           color: Colors.white,
                         ),
@@ -75,8 +78,10 @@ class AddNoteBottomSheet extends StatelessWidget {
                         style: const TextStyle(
                           color: Colors.white,
                         ),
+                        controller:
+                            BlocProvider.of<AddNoteCubit>(context).description,
                         decoration: const InputDecoration(
-                            hintText: "Task Title",
+                            hintText: "Task Description",
                             hintStyle: TextStyle(
                               color: Color(0xffAFAFAF),
                               fontSize: 18,
@@ -99,15 +104,13 @@ class AddNoteBottomSheet extends StatelessWidget {
                               color: Colors.white,
                             ),
                             onPressed: () async {
-                              var date = await showDatePicker(
+                              BlocProvider.of<AddNoteCubit>(context).date =
+                                  await showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime.utc(2010, 10, 16),
                                 lastDate: DateTime.utc(2030),
                               );
-                              debugPrint(DateFormat.yMd()
-                                  .format(date ?? DateTime.now())
-                                  .toString());
                             },
                           ),
                           const SizedBox(
@@ -135,9 +138,21 @@ class AddNoteBottomSheet extends StatelessWidget {
                           const SizedBox(
                             width: 10,
                           ),
-                          const Icon(
-                            Icons.flag_outlined,
-                            color: Colors.white,
+                          IconButton(
+                            icon: const Icon(
+                              Icons.flag_outlined,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return const AlertDialog(
+                                      contentPadding: EdgeInsets.zero,
+                                      content: TaskPriorityPopUp(),
+                                    );
+                                  });
+                            },
                           ),
                           const Spacer(),
                           state is AddNoteLoading?
@@ -151,17 +166,35 @@ class AddNoteBottomSheet extends StatelessWidget {
                                     Icons.send_outlined,
                                     color: primaryColor,
                                   ),
-                                  onPressed: () {
-                                    NoteModel notes = NoteModel(
-                                      title: 'ffff',
-                                      date: 'date',
-                                      time: 'time',
-                                      category: 'category',
-                                      description: 'description',
-                                      priority: 1,
-                                    );
-                                    BlocProvider.of<AddNoteCubit>(context)
-                                        .addNote(notes);
+                                  onPressed: () async {
+                                    print("============================");
+                                    print(BlocProvider.of<AddNoteCubit>(context)
+                                        .getCatTitle());
+                                    // String date = DateFormat.yMd()
+                                    //     .format(BlocProvider.of<AddNoteCubit>(
+                                    //                 context)
+                                    //             .date ??
+                                    //         DateTime.now())
+                                    //     .toString();
+                                    //
+                                    // NoteModel notes = NoteModel(
+                                    //   title:
+                                    //       BlocProvider.of<AddNoteCubit>(context)
+                                    //           .title
+                                    //           .text,
+                                    //   date: date,
+                                    //   time: 'time',
+                                    //   category:
+                                    //       BlocProvider.of<AddNoteCubit>(context)
+                                    //           .getCatTitle(),
+                                    //   description:
+                                    //       BlocProvider.of<AddNoteCubit>(context)
+                                    //           .description
+                                    //           .text,
+                                    //   priority: 1,
+                                    // );
+                                    // BlocProvider.of<AddNoteCubit>(context)
+                                    //     .addNote(notes);
                                   },
                                 )
                         ],
