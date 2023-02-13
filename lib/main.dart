@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:uptodo/cubit/add_note_cubit/add_note_cubit.dart';
 import 'package:uptodo/cubit/app_cubit/app_cubit.dart';
+import 'package:uptodo/cubit/category_cubit/category_cubit.dart';
 import 'package:uptodo/cubit/notes_cubit/notes_cubit.dart';
 import 'package:uptodo/helper/const.dart';
 import 'package:uptodo/helper/simple_bloc_observer.dart';
@@ -16,7 +17,7 @@ void main() async {
   Hive.registerAdapter(NoteModelAdapter());
   Hive.registerAdapter(CategoryModelAdapter());
   await Hive.openBox<NoteModel>(kNotesBox);
-  await Hive.openBox<NoteModel>(kCategoryBox);
+  await Hive.openBox<CategoryModel>(kCategoryBox);
 
   runApp(const MyApp());
 }
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => NotesCubit()),
+        BlocProvider(create: (context) => CategoryCubit()),
         BlocProvider(create: (context) => AppCubit()),
       ],
       child: MaterialApp(
