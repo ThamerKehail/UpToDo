@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uptodo/cubit/notes_cubit/notes_cubit.dart';
 import 'package:uptodo/model/note_model.dart';
+import 'package:uptodo/view/note_details_screen.dart';
 import 'package:uptodo/widgets/home/cusom_note_box.dart';
 import 'package:uptodo/widgets/home/custom_appbar.dart';
 import 'package:uptodo/widgets/home/custom_search_box.dart';
@@ -38,6 +39,13 @@ class AllNotes extends StatelessWidget {
                 itemBuilder: (context, i) {
                   return CustomNoteBox(
                     noteModel: notes[i],
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => NoteDetailsScreen(notes: notes[i]),
+                        ),
+                      );
+                    },
                   );
                 }),
           ),

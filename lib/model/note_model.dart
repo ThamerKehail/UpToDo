@@ -15,6 +15,8 @@ class NoteModel extends HiveObject {
   String category;
   @HiveField(5)
   int priority;
+  @HiveField(6)
+  int catColor;
 
   NoteModel({
     required this.title,
@@ -23,5 +25,6 @@ class NoteModel extends HiveObject {
     required this.time,
     required this.category,
     required this.priority,
+    required this.catColor,
   });
 }

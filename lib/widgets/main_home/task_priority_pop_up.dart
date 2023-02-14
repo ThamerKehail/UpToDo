@@ -46,8 +46,7 @@ class TaskPriorityPopUp extends StatelessWidget {
                       return PriorityCard(
                         priority: priority[index],
                         onTap: () {
-                          BlocProvider.of<AddNoteCubit>(context)
-                              .changePriority(index);
+                          context.read<AddNoteCubit>().changePriority(index);
                         },
                       );
                     }),
@@ -64,8 +63,7 @@ class TaskPriorityPopUp extends StatelessWidget {
                   CustomButton(
                       text: 'Save',
                       onTap: () {
-                        print(BlocProvider.of<AddNoteCubit>(context)
-                            .getPriority());
+                        BlocProvider.of<AddNoteCubit>(context).getPriority();
                         Navigator.pop(context);
                       }),
                 ],

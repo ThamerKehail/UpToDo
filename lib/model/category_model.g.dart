@@ -25,12 +25,11 @@ class CategoryModelAdapter extends TypeAdapter<CategoryModel> {
   @override
   void write(BinaryWriter writer, CategoryModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.color)
-      ..writeByte(2);
+      ..write(obj.color);
   }
 
   @override

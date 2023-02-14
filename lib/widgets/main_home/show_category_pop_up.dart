@@ -17,11 +17,11 @@ class ShowCategoryPopUp extends StatefulWidget {
 }
 
 class _ShowCategoryPopUpState extends State<ShowCategoryPopUp> {
-  @override
-  void initState() {
-    BlocProvider.of<AddNoteCubit>(context).getCategory();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   BlocProvider.of<AddNoteCubit>(context).getCategory();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +60,12 @@ class _ShowCategoryPopUpState extends State<ShowCategoryPopUp> {
                     itemBuilder: (context, index) {
                       return CategoryCard(
                         onTap: () {
-                          BlocProvider.of<AddNoteCubit>(context)
-                              .changeCatTitle(categories[index].title ?? "");
+                          BlocProvider.of<AddNoteCubit>(context).changeCatTitle(
+                              categories[index].title ?? "",
+                              categories[index].color ?? 0);
                           BlocProvider.of<AddNoteCubit>(context).getCatTitle();
-                          Navigator.pop(context);
-                          print(categories[index].title);
+
+                          // Navigator.pop(context);
                         },
                         cat: categories[index],
                       );

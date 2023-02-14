@@ -25,13 +25,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NotesCubit, NotesState>(builder: (context, state) {
-      return Scaffold(
-          body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 25),
-        child: BlocProvider.of<NotesCubit>(context).notes.isNotEmpty
-            ? AllNotes()
-            : BodyEmptyNotes(),
-      ));
+      return SafeArea(
+        child: Scaffold(
+            body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+          child: BlocProvider.of<NotesCubit>(context).notes.isNotEmpty
+              ? const AllNotes()
+              : const BodyEmptyNotes(),
+        )),
+      );
     });
   }
 }

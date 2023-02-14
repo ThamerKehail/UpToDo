@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:intl/intl.dart';
 import 'package:uptodo/helper/const.dart';
 import 'package:uptodo/model/category_model.dart';
 import 'package:uptodo/model/note_model.dart';
@@ -13,6 +12,8 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   TextEditingController title = TextEditingController();
   TextEditingController description = TextEditingController();
   String? catTitle;
+  int? catColor;
+
   var date;
 
   addNote(NoteModel notes) async {
@@ -33,8 +34,9 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   int currentPriority = 0;
   changePriority(int priority) {
     currentPriority = priority;
+
     print(currentPriority);
-    emit(AddNoteSuccess());
+    emit(ChangePriorityState());
   }
 
   int getPriority() {
@@ -58,13 +60,15 @@ class AddNoteCubit extends Cubit<AddNoteState> {
     emit(AddNoteSuccess());
   }
 
-  changeCatTitle(String title) {
+  changeCatTitle(String title, int color) {
     catTitle = title;
-    print(catTitle);
+    catColor = color;
     emit(AddNoteSuccess());
+    print(catTitle);
+    print(catColor);
   }
 
   String getCatTitle() {
-    return catTitle ?? "Cat not found";
+    return catTitle ?? "";
   }
 }

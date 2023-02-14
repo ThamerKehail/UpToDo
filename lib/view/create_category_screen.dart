@@ -152,6 +152,7 @@ class CreateCategoryScreen extends StatelessWidget {
                       ),
                       CustomButton(
                         onTap: () async {
+                          Navigator.pop(context);
                           var blocProvide =
                               BlocProvider.of<CreateCategoryCubit>(context);
                           CategoryModel cat = CategoryModel(
@@ -161,7 +162,6 @@ class CreateCategoryScreen extends StatelessWidget {
                           await BlocProvider.of<CreateCategoryCubit>(context)
                               .addCategory(cat);
                           BlocProvider.of<AddNoteCubit>(context).getCategory();
-                          Navigator.pop(context);
                         },
                         text: "Create Category",
                       ),
