@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:uptodo/cubit/add_note_cubit/add_note_cubit.dart';
 import 'package:uptodo/cubit/app_cubit/app_cubit.dart';
-import 'package:uptodo/cubit/category_cubit/category_cubit.dart';
 import 'package:uptodo/cubit/notes_cubit/notes_cubit.dart';
 import 'package:uptodo/helper/const.dart';
 import 'package:uptodo/helper/simple_bloc_observer.dart';

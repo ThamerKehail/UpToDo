@@ -44,6 +44,7 @@ dependencies:
   table_calendar: ^3.0.9
   intl: ^0.18.0
   flutter_iconpicker: ^3.2.2
+  webview_flutter: ^2.0.12
 
 dev_dependencies:
   flutter_test:

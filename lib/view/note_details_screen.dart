@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:uptodo/helper/color.dart';
 import 'package:uptodo/model/note_model.dart';
+import 'package:uptodo/widgets/custom_button.dart';
+import 'package:uptodo/widgets/note_details/custom_row_note_details.dart';
+import 'package:uptodo/widgets/note_details/custom_title_desc_note.dart';
+import 'package:uptodo/widgets/note_details/edit_task_title_pop_up.dart';
+
+import '../widgets/note_details/custom_appbar.dart';
 
 class NoteDetailsScreen extends StatelessWidget {
   final NoteModel notes;
@@ -14,39 +20,71 @@ class NoteDetailsScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
           child: Column(
             children: [
+              const CustomAppbar(
+                iconOne: Icons.close,
+                iconTwo: Icons.repeat,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              CustomTitleNoteAndDescription(
+                  title: notes.title,
+                  description: notes.description,
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            contentPadding: EdgeInsets.zero,
+                            content: EditTaskTitlePopUp(
+                                title: notes.title,
+                                description: notes.description),
+                          );
+                        });
+                  }),
+              const SizedBox(
+                height: 35,
+              ),
+              const CustomRowNoteDetails(
+                title: "Task Time:",
+                subTitle: "TodayAt 16:45",
+                icon: Icons.timer_outlined,
+              ),
+              CustomRowNoteDetails(
+                title: "Task Category:",
+                subTitle: notes.category,
+                icon: Icons.discount_outlined,
+              ),
+              CustomRowNoteDetails(
+                title: "Task Priority:",
+                subTitle: notes.priority.toString(),
+                icon: Icons.flag_outlined,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: grayColor),
-                    child: const Center(
-                      child: Icon(
-                        Icons.close,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
+                children: const [
+                  Icon(
+                    Icons.delete_outline,
+                    color: Colors.red,
+                    size: 35,
                   ),
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: grayColor),
-                    child: const Center(
-                      child: Icon(
-                        Icons.repeat,
-                        color: Colors.white,
-                        size: 20,
-                      ),
+                  Text(
+                    "Delete Task",
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 18,
                     ),
-                  ),
+                  )
                 ],
               ),
+              const Spacer(),
+              CustomButton(
+                text: 'Edit Text',
+                onTap: () {},
+                width: double.infinity,
+              )
             ],
           ),
         ),
