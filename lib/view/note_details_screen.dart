@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uptodo/helper/color.dart';
 import 'package:uptodo/model/note_model.dart';
+import 'package:uptodo/view/main_home_screen.dart';
 import 'package:uptodo/widgets/custom_button.dart';
 import 'package:uptodo/widgets/note_details/custom_row_note_details.dart';
 import 'package:uptodo/widgets/note_details/custom_title_desc_note.dart';
@@ -63,26 +64,38 @@ class NoteDetailsScreen extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                children: const [
-                  Icon(
-                    Icons.delete_outline,
-                    color: Colors.red,
-                    size: 35,
-                  ),
-                  Text(
-                    "Delete Task",
-                    style: TextStyle(
+              InkWell(
+                onTap: () {
+                  notes.delete();
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (_) => MainHomeScreen()),
+                      (route) => false);
+                },
+                child: Row(
+                  children: const [
+                    Icon(
+                      Icons.delete_outline,
                       color: Colors.red,
-                      fontSize: 18,
+                      size: 35,
                     ),
-                  )
-                ],
+                    Text(
+                      "Delete Task",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 18,
+                      ),
+                    )
+                  ],
+                ),
               ),
               const Spacer(),
               CustomButton(
                 text: 'Edit Text',
-                onTap: () {},
+                onTap: () {
+                  notes.title = "New Note Edit";
+                  notes.save();
+                },
                 width: double.infinity,
               )
             ],

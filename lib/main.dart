@@ -10,6 +10,8 @@ import 'package:uptodo/model/category_model.dart';
 import 'package:uptodo/model/note_model.dart';
 import 'package:uptodo/view/main_home_screen.dart';
 
+import 'cubit/edit_note_cubit/edit_note_cubit.dart';
+
 void main() async {
   await Hive.initFlutter();
   Bloc.observer = SimpleBlocObserver();
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => NotesCubit()),
         BlocProvider(create: (context) => AddNoteCubit()),
         BlocProvider(create: (context) => AppCubit()),
+        BlocProvider(create: (context) => EditNoteCubit()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
