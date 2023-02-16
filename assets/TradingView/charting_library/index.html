@@ -1,0 +1,319 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+	<title>TradingView Charting Library demo</title>
+
+	<!-- Fix for iOS Safari zooming bug -->
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+	<script type="text/javascript" src="charting_library/charting_library.standalone.js"></script>
+	<script type="text/javascript" src="datafeeds/udf/dist/polyfills.js"></script>
+	<script type="text/javascript" src="datafeeds/udf/dist/bundle.js"></script>
+	<script type="text/javascript" src="api/historyProvider.js"></script>
+	<script type="text/javascript" src="api/index.js"></script>
+
+	<script type="text/javascript">
+
+        function getParameterByName(name) {
+            var url = location;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&]*)|&|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+		}
+
+        function syncOrderPos(action, ticketID, price, desc) {
+        }
+
+        var orderPosT;
+        var widget;
+        var tempChartData;
+        var incomingSymbolName;
+        var symbolName2;
+        var ticketID;
+        var isFirstLine = true;
+        var entityIds = {};
+
+        function setChartData(action, data) {
+
+            if (JSON.stringify(action) == '7') {
+                
+
+                try {
+                    if (data.ticketId)
+                        createDelSingleHL("", data);
+                    else
+                        setSymbol(data);
+                } catch (err) {
+                }
+            }
+        }
+
+        var isLineDrawn = false;
+        function createHL(ticketId7, dataList) {
+
+            for (let data of dataList) {
+                var ticketId = data.ticketId;
+
+                try {
+                    var lineObj = entityIds[ticketId];
+
+                    if (lineObj)
+                        lineObj.remove();
+                } catch (err) {
+                }
+
+                var lineObject;
+
+                if (data.type == 0) {
+                    lineObject = widget.chart().createOrderLine()
+                        .onMove(ticketId, function (ticketId) {
+                            var lineObj = entityIds[ticketId];
+
+                            invokeCSharpAction("7", ticketId, lineObj.getPrice());
+                        })
+                        .onCancel(ticketId, function (ticketId) {
+                            var lineObj = entityIds[ticketId];
+
+                            invokeCSharpAction("8", ticketId, "");
+                        })
+                        .setQuantity("")
+                        .setText(data.text)
+                        .setPrice(data.price)
+                        .setBodyTextColor(data.color)
+                        .setBodyBorderColor(data.color)
+                        .setCancelButtonIconColor(data.color)
+                        .setCancelButtonBorderColor(data.color)
+                        .setLineColor(data.color)
+                        .setLineStyle(1);
+                } else {
+                    
+
+                    lineObject = widget.chart().createOrderLine()
+                        .onMove(ticketId, function (ticketId) {
+                            var lineObj = entityIds[ticketId];
+
+                            invokeCSharpAction("10", ticketId, lineObj.getPrice());
+                        })
+                        .onCancel(ticketId, function (ticketId) {
+                            var lineObj = entityIds[ticketId];
+
+                            invokeCSharpAction("9", ticketId, "");
+                        })
+                        .setQuantity("")
+                        .setText(data.text)
+                        .setPrice(data.price)
+                        .setBodyTextColor(data.color)
+                        .setBodyBorderColor(data.color)
+                        .setCancelButtonIconColor(data.color)
+                        .setCancelButtonBorderColor(data.color)
+                        .setLineColor(data.color)
+                        .setLineStyle(1);
+                }
+
+                entityIds[ticketId] = lineObject;
+
+            }
+        }
+
+        function createDelSingleHL(ticketId7, data) {
+
+            if (data.action == 3) {
+                for (let ticketId in entityIds) {
+
+                    try {
+                        var lineObj = entityIds[ticketId];
+
+                        if (lineObj)
+                            lineObj.remove();
+                    } catch (err) {
+                    }
+                }
+
+                entityIds = {};
+                return;
+            } else if (data.action == 4) {
+                widget.save(function (data) {
+                    tempChartData = data;
+                    localStorage.setItem('tempChartData', JSON.stringify(tempChartData));
+                    localStorage.setItem('tempChartSymName', symbolName2);
+                });
+
+                return;
+
+            } else if (data.action == 5) {
+                for (let ticketId in entityIds) {
+
+                    try {
+                        var lineObj = entityIds[ticketId];
+
+                        if (lineObj)
+                            lineObj.remove();
+                    } catch (err) {
+                    }
+                }
+
+                entityIds = {};
+                tempChartData = null;
+                localStorage.removeItem('tempChartData');
+                localStorage.removeItem('tempChartSymName');
+
+                return;
+            }
+
+            var ticketId = data.ticketId;
+
+            try {
+                var lineObj = entityIds[ticketId];
+
+                if (lineObj)
+                    lineObj.remove();
+            } catch (err) {
+            }
+
+            if (data.action < 2) {
+                var lineObject;
+
+                if (data.type == 0) {
+                    lineObject = widget.chart().createOrderLine()
+                        .onMove(ticketId, function (ticketId) {
+                            var lineObj = entityIds[ticketId];
+
+                            invokeCSharpAction("7", ticketId, lineObj.getPrice());
+                        })
+                        .onCancel(ticketId, function (ticketId) {
+                            var lineObj = entityIds[ticketId];
+
+                            invokeCSharpAction("8", ticketId, "");
+                        })
+                        .setQuantity("")
+                        .setText(data.text)
+                        .setPrice(data.price)
+                        .setBodyTextColor(data.color)
+                        .setBodyBorderColor(data.color)
+                        .setCancelButtonIconColor(data.color)
+                        .setCancelButtonBorderColor(data.color)
+                        .setLineColor(data.color)
+                        .setLineStyle(1);
+                } else {
+                    
+
+                    lineObject = widget.chart().createOrderLine()
+                        .onMove(ticketId, function (ticketId) {
+                            var lineObj = entityIds[ticketId];
+
+                            invokeCSharpAction("10", ticketId, lineObj.getPrice());
+                        })
+                        .onCancel(ticketId, function (ticketId) {
+                            var lineObj = entityIds[ticketId];
+
+                            invokeCSharpAction("9", ticketId, "");
+                        })
+                        .setQuantity("")
+                        .setText(data.text)
+                        .setPrice(data.price)
+                        .setBodyTextColor(data.color)
+                        .setBodyBorderColor(data.color)
+                        .setCancelButtonIconColor(data.color)
+                        .setCancelButtonBorderColor(data.color)
+                        .setLineColor(data.color)
+                        .setLineStyle(1);
+                }
+
+                entityIds[ticketId] = lineObject;
+            }
+
+            
+        }
+
+        function initOnReady() {
+            setSymbol(getParameterByName('symbol'));
+        }
+
+        function setSymbol(data) {
+            incomingSymbolName = data;
+            if (data == localStorage.getItem('tempChartSymName'))
+                data = 'N/A';
+            //var symbolT = setInterval(function () {
+
+            widget = window.tvWidget = new TradingView.widget({
+                fullscreen: true,
+                symbol: data || 'GBP/CHF',
+                interval: '30',
+                container_id: "tv_chart_container",
+                timezone: getParameterByName('timezone') || 'America/New_York',
+                datafeed: datafeed,
+                library_path: "../../Content/charting_library/charting_library/",
+                locale: getParameterByName('lang') || "en",
+                enabled_features: ["header_saveload", "display_market_status", "header_fullscreen_button", "header_screenshot", "symbol_info", "use_localstorage_for_settings"],
+                enabled_features: ["move_logo_to_main_pane"],
+                charts_storage_url: 'https://saveload.tradingview.com',
+                charts_storage_api_version: "1.1",
+                client_id: 'tradingview.com',
+                user_id: 'public_user_id',
+                theme: getParameterByName('theme') || "light"
+            });
+
+                //clearInterval(symbolT);
+
+           // }, 1500);
+
+            widget.headerReady().then(function () {
+                //alert(data + '' + localStorage.getItem('tempChartSymName'));
+                if (data == 'N/A' || data == localStorage.getItem('tempChartSymName')) {
+                    tempChartData = JSON.parse(localStorage.getItem('tempChartData'));
+
+                    incomingSymbolName = localStorage.getItem('tempChartSymName');
+
+                    if (tempChartData)
+                        widget.load(tempChartData);
+                }
+            });
+        };
+
+		
+
+		window.addEventListener('DOMContentLoaded', initOnReady, false);
+
+		function c2Js(data) {
+		}
+
+		function setPriceScale() {
+			return 1000;
+		}
+
+		function setupWebViewJavascriptBridge(callback) {
+			try {
+				var jBridgeT = setInterval(function () {
+					invokeCSharpAction("");
+                    clearInterval(jBridgeT)
+				}, 1000);
+			}
+			catch (err) {
+			}
+
+			jsBridge.callHandler('get_pricescale', ['1'], function (response) {
+			})
+
+			if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+			if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+			window.WVJBCallbacks = [callback];
+			var WVJBIframe = document.createElement('iframe');
+			WVJBIframe.style.display = 'none';
+			WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+			document.documentElement.appendChild(WVJBIframe);
+			setTimeout(function () { document.documentElement.removeChild(WVJBIframe) }, 0)
+		}
+	</script>
+
+</head>
+
+	<body style="margin:0px;">
+		<div id="tv_chart_container"></div>
+	</body>
+
+</html>
